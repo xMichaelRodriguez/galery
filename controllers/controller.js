@@ -8,8 +8,8 @@ const pathResolve = path.resolve(process.cwd(), "./uploads");
  *Obtiene todos los directorios
  *@function getDirectoriesAndImages
  *@access public
- *@params(Object)
- * */
+ *@param Object
+ */
 const getDirectoriesAndImages = (req, res = response) => {
   try {
     const files = [];
@@ -33,7 +33,8 @@ const getDirectoriesAndImages = (req, res = response) => {
  * Crea un nuevo directorio
  * @function newDirectory
  * @access public
- * @params(Object)
+ * @param Object
+ *
  */
 const newDirectory = (req, res = response) => {
   const { directory } = req.body;
@@ -65,7 +66,7 @@ const newDirectory = (req, res = response) => {
  * Renombra un directorio
  *@funciton renameDirectory
  *@access public
- *@params(Objects)
+ *@param Object
  * */
 
 const renameDirectory = (req, res = response) => {
@@ -99,7 +100,8 @@ const renameDirectory = (req, res = response) => {
  *Elimina un directorio enviado del frontEnd
  *@function deleteDirectory
  *@access public
- *@params(Objects)
+ *@param Object
+ )
  */
 
 const deleteDirectory = (req, res = response) => {

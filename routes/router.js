@@ -1,4 +1,4 @@
-const { Router, response } = require("express");
+const { Router } = require("express");
 const { check } = require("express-validator");
 const rutes = Router();
 const { validarCampos } = require("../middleware/validationFields");
@@ -23,7 +23,7 @@ rutes.post(
 
 rutes.put(
   "/rename",
-  check("olddirectory", "the directori is require").notEmpty(),
+  check("oldDirectory", "the directori is require").notEmpty(),
   check("directory", "the directori is require").notEmpty(),
   renameDirectory
 );
