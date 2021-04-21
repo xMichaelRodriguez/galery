@@ -22,43 +22,59 @@ const upload = async (req, res) => {
   }
 };
 
-const searchFile = (oldName, newName) => {
+//Renombra un archivo dentro de un directorio
+const renameOfFolder = async (oldName, newName) => {
+  let result = [];
   const folder = oldName.split("/")[0];
   const originalOldName = oldName.split("/")[1];
-  console.log(folder);
-
-  if (oldName.indexOf("/") >= -1) {
-    fs.readdirSync(`${pathResolve}/${folder}`).forEach((img) => {
-      if (img === originalOldName) {
-        fs.rename(
-          `${path.join(pathResolve, folder)}/${originalOldName}`,
-          `${path.join(pathResolve, folder)}/${newName}${path.extname(
-            oldName
-          )}`,
-          (err) => {
-            console.log("Image renamed");
-            console.log(err);
-          }
-        );
-      }
-    });
-  }
-
-  fs.readdirSync(pathResolve).forEach((file) => {
-    if (file === oldName) {
-      console.log(oldName);
+  console.log("rename folder");
+  fs.readdirSync(`${pathResolve}/${folder}`).forEach((img) => {
+    if (img === originalOldName) {
       fs.rename(
-        path.join(pathResolve, oldName),
-        path.join(pathResolve, `${newName}${path.extname(oldName)}`),
-        () => {
-          console.log("ok");
-          return "Image Renamed";
+        `${path.join(pathResolve, folder)}/${originalOldName}`,
+        `${path.join(pathResolve, folder)}/${newName}${path.extname(oldName)}`,
+        (err) => {
+          console.log(err);
+          if (err) {
+            result.push(err);
+          }
         }
       );
     }
   });
+  return await result;
 };
 
+//Renombra archivo
+const renameOnlyFile = async (oldName, newName) => {
+  let result = [];
+
+  fs.readdirSync(pathResolve).forEach((file) => {
+    if (file === oldName) {
+      const pathResult = path.resolve(
+        path.join(pathResolve, `${newName}${path.extname(oldName)}`)
+      );
+
+      fs.rename(path.join(pathResolve, oldName), pathResult, (err) => {
+        if (err) {
+          result.push(err);
+        }
+      });
+    }
+  });
+  return await result;
+};
+
+//Busca un "/" en el oldName para decidir si renombrara un folder o archivo
+const searchFile = async (oldName, newName) => {
+  if (oldName.indexOf("/") > 0) {
+    return await renameOfFolder(oldName, newName);
+  } else {
+    return await renameOnlyFile(oldName, newName);
+  }
+};
+
+//El proceso cuando se llama en la solicitud
 const renameFile = async (req, res) => {
   const { newName, oldName } = req.body;
 
@@ -66,10 +82,10 @@ const renameFile = async (req, res) => {
     if (newName && oldName) {
       const resp = await searchFile(oldName, newName);
 
-      if (resp === "Image Renamed") {
-        return res.satus(200).json({
+      if (resp !== "") {
+        return res.status(200).json({
           ok: true,
-          msg: resp,
+          msg: "Image Renamed",
         });
       } else {
         return res.status(400).json({
