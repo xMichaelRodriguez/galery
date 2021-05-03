@@ -1,5 +1,4 @@
 const baseUrl = process.env.REACT_APP_API_URL;
-console.log(baseUrl);
 //PARAMETROS NOMBRADOS
 
 export const fetchSync = ({ endPoint = "", data = "", method = "GET" }) => {
