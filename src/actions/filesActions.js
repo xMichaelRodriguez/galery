@@ -14,7 +14,7 @@ export const startLoadingFiles = () => {
 export const loadingPathFiles = (dir) => {
   return async (dispatch) => {
     const paramsFetch = {
-      endPoint: `path/${dir}`,
+      endPoint: dir,
     };
     const body = await fetchSync(paramsFetch);
     const resp = await body.json();
@@ -43,3 +43,21 @@ export const uiActiveImage = (name) => ({
 });
 export const uiOpenModal = () => ({ type: types.uiOpenModal });
 export const uiCloseModal = () => ({ type: types.uiCloseModal });
+
+export const startRenameFile = (newName, oldName, folder) => {
+  return async (dispatch) => {
+    const routeRename = `${folder}/${oldName}`;
+    console.log(folder ? routeRename : oldName);
+    const params = {
+      endPoint: "uploads/rename",
+      data: { oldName: folder ? routeRename : oldName, newName },
+      method: "PUT",
+    };
+    const body = await fetchSync(params);
+    const resp = await body.json();
+    if (body.ok) {
+      dispatch(loadingPathFiles(folder));
+      dispatch(startLoadingFiles());
+    }
+  };
+};

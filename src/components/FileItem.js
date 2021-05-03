@@ -11,7 +11,7 @@ export const FileItem = ({ file }) => {
 
   const handleClick = () => {
     if (!file.includes(".")) {
-      history.push(`/path/${file}`);
+      history.push(`/${file}`);
     }
   };
 
