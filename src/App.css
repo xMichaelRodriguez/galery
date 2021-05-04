@@ -19,6 +19,7 @@ html {
   background-color: #363535;
   cursor: pointer;
   color: rgb(189, 186, 186);
+  transition: all 0.3s;
 }
 
 .ReactModalPortal > div {
@@ -59,4 +60,15 @@ html {
   max-width: 300px;
   outline: none;
   padding: 10px;
+}
+
+.fab {
+  background-color: #521da7;
+  border-radius: 100%;
+  bottom: 25px;
+  font-size: 30px;
+  padding: 25px;
+  position: fixed;
+  right: 25px;
+
 }

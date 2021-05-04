@@ -1,6 +1,6 @@
 import { fetchSync } from "../helper/fetch";
 import { types } from "../types/types";
-
+import Swal from "sweetalert2";
 export const startLoadingFiles = () => {
   return async (dispatch) => {
     const body = await fetchSync("/");
@@ -47,7 +47,7 @@ export const uiCloseModal = () => ({ type: types.uiCloseModal });
 export const startRenameFile = (newName, oldName, folder) => {
   return async (dispatch) => {
     const routeRename = `${folder}/${oldName}`;
-    console.log(folder ? routeRename : oldName);
+
     const params = {
       endPoint: "uploads/rename",
       data: { oldName: folder ? routeRename : oldName, newName },
@@ -58,6 +58,25 @@ export const startRenameFile = (newName, oldName, folder) => {
     if (body.ok) {
       dispatch(loadingPathFiles(folder));
       dispatch(startLoadingFiles());
+    }
+  };
+};
+
+export const startingNewFolder = (directory) => {
+  return async (dispatch) => {
+    const params = {
+      endPoint: "new",
+      data: { directory },
+      method: "POST",
+    };
+    const result = await fetchSync(params);
+    const body = await result.json();
+
+    if (body.ok) {
+      Swal.fire("Create Directory", body.msg, "success");
+      dispatch(startLoadingFiles());
+    } else {
+      Swal.fire("Create Directory", body.msg, "danger");
     }
   };
 };

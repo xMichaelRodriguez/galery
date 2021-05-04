@@ -81,7 +81,9 @@ export const ModalScreen = () => {
                 name="newName"
                 value={newName}
                 onChange={handleInputChange}
-                placeholder="New Name File "
+                placeholder={`New Name  ${
+                  imageActive && imageActive.includes(".") ? "File" : "Folder"
+                }`}
               />
             </div>
             <div className="col-md-12 mb-3">

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
+import { BsPlus } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-
-import { startLoadingFiles } from "../actions/filesActions";
+import { startingNewFolder, startLoadingFiles } from "../actions/filesActions";
 import { FileItem } from "./FileItem";
 import { NotFiles } from "./NotFiles";
 export const HomeScreen = () => {
@@ -12,6 +12,13 @@ export const HomeScreen = () => {
   useEffect(() => {
     dispatch(startLoadingFiles());
   }, [dispatch]);
+
+  const handlerNewDirectory = () => {
+    const resp = window.prompt("Name of folder");
+    if (resp !== null) {
+      dispatch(startingNewFolder(resp.toString()));
+    }
+  };
   return (
     <>
       <div className="container mt-3 w-75">
@@ -24,8 +31,13 @@ export const HomeScreen = () => {
             </div>
           )}
         </div>
+        <button
+          className="btn   fab font-weight-bold"
+          onClick={handlerNewDirectory}
+        >
+          <BsPlus className="iconStyle" size="4rem" />
+        </button>
       </div>
-     
     </>
   );
 };

@@ -20,6 +20,13 @@ export const FileItem = ({ file }) => {
     dispatch(uiOpenModal());
   };
 
+  const handleRenameFolder = (e) => {
+    e.preventDefault();
+    if (!file.includes(".")) {
+      dispatch(uiActiveImage(file));
+      dispatch(uiOpenModal());
+    }
+  };
   return (
     <>
       <div className="col-md-6  mb-3 text-break">
@@ -27,6 +34,8 @@ export const FileItem = ({ file }) => {
           className="badge badge-secondary p-2 d-flex justify-content-center mt-auto   hover"
           onClick={handleClick}
           onDoubleClick={handleModal}
+          onContextMenu={handleRenameFolder}
+          contextMenu="mymenu"
         >
           <h5 className="mt-auto font-weight-normal text-break">
             {file.indexOf(".") > 0 ? (
@@ -39,6 +48,7 @@ export const FileItem = ({ file }) => {
           </h5>
         </span>
       </div>
+
       <ModalScreen file={file} />
     </>
   );
